@@ -36,42 +36,49 @@ public ResponseEntity<String> getResponse(@RequestBody String ask){
     @PostMapping("/embed")
     public ResponseEntity<String> getEmbeddingResponse(@RequestBody String ask) {
 
-        // Knowledge base (demo only — load once in real apps)
-        TextSegment info1 = TextSegment.from(
-                "The password for the secret lab is: JAVA_ROCKS_2025"
-        );
-        TextSegment info2 = TextSegment.from(
-                "The Satellite L855 laptop was released around 2012."
-        );
-
-        embeddingStore.add(embeddingModel.embed(info1).content(), info1);
-        embeddingStore.add(embeddingModel.embed(info2).content(), info2);
-
-        // Create query embedding
+        // 1. Embed the user question
         Embedding queryEmbedding = embeddingModel.embed(ask).content();
 
-        // Build search request (NEW API)
+        // 2. Search vector store (retrieve MORE than one chunk)
         EmbeddingSearchRequest request = EmbeddingSearchRequest.builder()
                 .queryEmbedding(queryEmbedding)
-                .maxResults(1)
+                .maxResults(3)
                 .build();
 
-        // Perform search
         EmbeddingSearchResult<TextSegment> result =
                 embeddingStore.search(request);
 
         List<EmbeddingMatch<TextSegment>> matches = result.matches();
 
         if (matches.isEmpty()) {
-            return ResponseEntity.ok("No relevant information found.");
+            return ResponseEntity.ok("I could not find relevant information in the CV.");
         }
 
-        EmbeddingMatch<TextSegment> bestMatch = matches.get(0);
+        // 3. Build context from retrieved chunks
+        String context = matches.stream()
+                .map(m -> m.embedded().text())
+                .reduce("", (a, b) -> a + "\n\n" + b);
 
-        return ResponseEntity.ok(
-                "Answer: " + bestMatch.embedded().text() +
-                        "\nSimilarity Score: " + bestMatch.score()
-        );
+        // 4. Ask the chat model to answer USING the context
+        String prompt = """
+            You are answering questions strictly based on Amanuel Temesgen's CV.
+
+            Use ONLY the information provided below.
+            If the answer is not present, say "Not mentioned in the CV".
+
+            Context:
+            %s
+
+            Question:
+            %s
+
+            Answer concisely.
+            """.formatted(context, ask);
+
+        String answer = chatModel.chat(prompt);
+
+        return ResponseEntity.ok(answer);
     }
+
 
 }

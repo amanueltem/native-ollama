@@ -1,0 +1,102 @@
+NAME
+Amanuel Temesgen Halefom
+
+LOCATION
+Addis Ababa, Ethiopia
+
+CONTACT
+Phone: +251 940969172
+Email: amanueltemesgen62@gmail.com
+
+ONLINE PROFILES
+Portfolio: https://personal-portfolio-lt7x.onrender.com
+GitHub: https://github.com/amanueltem
+LinkedIn: https://www.linkedin.com/in/amanuel-temesgen-b05a23316/
+
+PROFESSIONAL SUMMARY
+Backend Software Engineer specializing in Java and Spring Boot, with hands-on experience
+building secure, scalable, and high-performance systems for financial and enterprise
+environments. Strong expertise in REST API design, microservices architecture, relational
+databases, and GraalVM native microservices. Experienced with modern Java features,
+including virtual threads, and focused on clean architecture, performance optimization,
+and production-ready engineering.
+
+TECHNICAL SKILLS
+Programming Languages:
+Java, Kotlin, Python, C++
+
+Frameworks and Libraries:
+Spring Boot, Spring Batch, Spring AI, Apache Kafka, JUnit, Mockito, Angular
+
+AI and LLM Integration:
+Spring AI, LangChain4j, Ollama (local LLM runtime)
+
+Microservices and Deployment:
+REST APIs, Docker, GraalVM Native Image
+
+Databases:
+PostgreSQL, Oracle, MySQL, MongoDB
+
+Tools and Platforms:
+Docker, IntelliJ IDEA, Eclipse, VS Code
+
+Version Control:
+Git, GitHub, Gitea
+
+Web Technologies:
+HTML, CSS, JavaScript, TypeScript
+
+PROFESSIONAL EXPERIENCE
+
+Software Engineer — Development Bank of Ethiopia
+April 2025 – Present
+
+- Architected and developed backend services for the core Asset Management System using
+  Spring Boot.
+- Designed and implemented JWT-secured REST APIs with fine-grained role-based access
+  control, including Inputer/Authorizer workflows.
+- Improved data processing performance through pagination strategies, indexing, and
+  materialized views.
+- Applied Clean Architecture principles and Java Generics to reduce redundancy and improve
+  maintainability across modules.
+- Documented all services using OpenAPI, enabling effective collaboration among 6+ developers.
+
+Network and Systems Engineer — China CITIC
+February 2025 – March 2025
+
+- Maintained secure radio communication systems for the Addis Ababa Police Commission.
+- Deployed and configured 240+ thin clients across four schools under a Ministry of Education
+  project using FusionAccess VDI and CNA networks.
+- Configured core infrastructure including servers, virtual desktops, and low-bandwidth
+  learning environments.
+
+PROJECTS
+
+Asset Management System — Development Bank of Ethiopia
+- Backend system built with Spring Boot featuring JWT authentication and role-based workflows.
+- Optimized database access using pagination and materialized views for high-performance
+  enterprise data handling.
+
+Bulk Email Delivery Service — Java Virtual Threads and Spring Batch
+- Developed a high-throughput email delivery system capable of sending 2,000+ emails within
+  minutes.
+- Leveraged Java virtual threads to improve concurrency while minimizing resource usage.
+
+Clearance System — Mekelle University
+- Full-stack application with Spring Boot backend, React frontend, and PostgreSQL database.
+- Implemented secure authentication, role-based authorization, and RESTful APIs.
+
+LLM-Powered Microservice — Spring AI, LangChain4j, Ollama, GraalVM
+- Developed a lightweight AI-enabled microservice using local LLM inference with Ollama.
+- Compiled the service to a GraalVM native image, achieving instant startup times under 100 ms
+  and low memory consumption.
+- Demonstrated fully offline, production-ready LLM inference.
+
+EDUCATION
+Bachelor of Science in Software Engineering
+Mekelle University — 2024
+CGPA: 3.91 / 4.00
+
+CERTIFICATIONS
+- Ethiopian National Exit Examination — 81% (2024)
+- Artificial Intelligence Fundamentals — Udacity (2025)
