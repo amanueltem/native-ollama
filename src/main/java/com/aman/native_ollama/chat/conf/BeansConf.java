@@ -6,6 +6,8 @@ import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.chroma.ChromaApiVersion;
+import dev.langchain4j.store.embedding.chroma.ChromaEmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +33,11 @@ public class BeansConf {
                 .build();
     }
     @Bean
-    public EmbeddingStore<TextSegment> embeddingStore(){
-        return new InMemoryEmbeddingStore<>();
+    public EmbeddingStore<TextSegment> embeddingStore() {
+        return ChromaEmbeddingStore.builder()
+                .baseUrl("http://localhost:8000")
+                .collectionName("university_docs")
+                .apiVersion(ChromaApiVersion.V2)
+                .build();
     }
 }
