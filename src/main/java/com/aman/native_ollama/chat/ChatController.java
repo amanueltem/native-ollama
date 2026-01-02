@@ -15,24 +15,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/chat")
 public class ChatController {
-private final ChatModel chatModel;
-private final EmbeddingModel embeddingModel;
-private final EmbeddingStore<TextSegment> embeddingStore;
-public ChatController(ChatModel chatModel
-        , EmbeddingModel embeddingModel
-        , EmbeddingStore<TextSegment> embeddingStore){
-    this.chatModel=chatModel;
-    this.embeddingModel=embeddingModel;
-    this.embeddingStore=embeddingStore;
-}
-@PostMapping
-public ResponseEntity<String> getResponse(@RequestBody String ask){
-    return ResponseEntity.ok(chatModel.chat(ask));
-}
+    private final ChatModel chatModel;
+    private final EmbeddingModel embeddingModel;
+    private final EmbeddingStore<TextSegment> embeddingStore;
+
+    public ChatController(ChatModel chatModel
+            , EmbeddingModel embeddingModel
+            , EmbeddingStore<TextSegment> embeddingStore) {
+        this.chatModel = chatModel;
+        this.embeddingModel = embeddingModel;
+        this.embeddingStore = embeddingStore;
+    }
+
+    @PostMapping
+    public ResponseEntity<String> getResponse(@RequestBody String ask) {
+        return ResponseEntity.ok(chatModel.chat(ask));
+    }
+
     @PostMapping("/embed")
     public ResponseEntity<String> getEmbeddingResponse(@RequestBody String ask) {
 
@@ -61,23 +65,56 @@ public ResponseEntity<String> getResponse(@RequestBody String ask){
 
         // 4. Ask the chat model to answer USING the context
         String prompt = """
-            You are answering questions strictly based on Amanuel Temesgen's CV.
-
-            Use ONLY the information provided below.
-            If the answer is not present, say "Not mentioned in the CV".
-
-            Context:
-            %s
-
-            Question:
-            %s
-
-            Answer concisely.
-            """.formatted(context, ask);
+                You are answering questions strictly based on Amanuel Temesgen's CV.
+                
+                Use ONLY the information provided below.
+                If the answer is not present, say "Not mentioned in the CV".
+                
+                Context:
+                %s
+                
+                Question:
+                %s
+                
+                Answer concisely.
+                """.formatted(context, ask);
 
         String answer = chatModel.chat(prompt);
 
         return ResponseEntity.ok(answer);
+    }
+
+
+    @PostMapping("/rag-chat")
+    public ResponseEntity<String> getGeneralRagResponse(@RequestBody String ask) {
+        Embedding queryEmbedding = embeddingModel.embed(ask).content();
+        EmbeddingSearchRequest request = EmbeddingSearchRequest.builder()
+                .queryEmbedding(queryEmbedding)
+                .maxResults(4)
+                .build();
+
+        EmbeddingSearchResult<TextSegment> result = embeddingStore.search(request);
+        List<EmbeddingMatch<TextSegment>> matches = result.matches();
+        if (matches.isEmpty()) {
+            return ResponseEntity.ok("I don't have any documents in my knowledge base to answer that yet.");
+        }
+        String context = matches.stream()
+                .map(m -> m.embedded().text())
+                .collect(Collectors.joining("\n\n"));
+        String prompt = """
+        You are a helpful assistant. Use the provided context to answer the question.
+        
+        Guidelines:
+        - If the context doesn't contain the answer, say you don't know based on the documents.
+        - Be professional and concise.
+        
+        Context:
+        %s
+        
+        Question:
+        %s
+        """.formatted(context, ask);
+        return ResponseEntity.ok(chatModel.chat(prompt));
     }
 
 

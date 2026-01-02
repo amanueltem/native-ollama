@@ -37,6 +37,8 @@ public class BeansConf {
         return ChromaEmbeddingStore.builder()
                 .baseUrl("http://localhost:8000")
                 .collectionName("university_docs")
+                .tenantName("default_tenant")
+                .databaseName("default_database")
                 .apiVersion(ChromaApiVersion.V2)
                 .build();
     }
