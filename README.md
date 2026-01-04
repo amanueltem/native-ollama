@@ -27,7 +27,7 @@ This repository demonstrates how to build a **local LLM-powered CV chatbot** tha
 
 ✅ Manual text chunking with overlap
 
-✅ In-memory vector store
+✅ ChromaDb vector store
 
 ✅ Similarity search over embeddings
 
@@ -46,7 +46,7 @@ TextSegment
   ↓
 EmbeddingModel (Ollama)
   ↓
-EmbeddingStore (InMemory)
+EmbeddingStore (Chroma DB)
   ↓
 Similarity Search
   ↓
